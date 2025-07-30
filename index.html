@@ -447,13 +447,40 @@
             box-shadow: 0 15px 40px rgba(138, 43, 226, 0.3);
         }
 
-        .portfolio-img {
+        .portfolio-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: var(--transition);
         }
-
+        
+        .video-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(138, 43, 226, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            opacity: 0;
+            transition: var(--transition);
+            cursor: pointer;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            border: 2px solid white;
+        }
+        
+        .portfolio-item:hover .video-play-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
         .portfolio-overlay {
             position: absolute;
             top: 0;
@@ -467,13 +494,14 @@
             padding: 25px;
             opacity: 0;
             transition: var(--transition);
+            z-index: 1;
         }
-
+        
         .portfolio-item:hover .portfolio-overlay {
             opacity: 1;
         }
-
-        .portfolio-item:hover .portfolio-img {
+        
+        .portfolio-item:hover .portfolio-video {
             transform: scale(1.05);
         }
 
@@ -514,6 +542,7 @@
 
         .form-group {
             margin-bottom: 25px;
+            position: relative;
         }
 
         .form-label {
@@ -756,6 +785,130 @@
         .skill-item:nth-child(5) { animation-delay: 0.5s; }
         .skill-item:nth-child(6) { animation-delay: 0.6s; }
 
+        /* Form Status Messages */
+        .form-status {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .form-status.success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            color: #2ecc71;
+        }
+
+        .form-status.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            color: #e74c3c;
+        }
+
+        /* Form Loading State */
+        .form-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .form-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 5px solid var(--secondary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .video-modal-content {
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+        }
+        
+        .video-modal-content video {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 15px 50px rgba(138, 43, 226, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        .video-details {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            margin-top: -5px;
+        }
+        
+        .video-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .video-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .name {
@@ -815,6 +968,10 @@
                 height: 55px;
                 font-size: 1.8rem;
             }
+
+            .video-modal-content {
+                width: 95%;
+            }
         }
 
         @media (max-width: 480px) {
@@ -836,14 +993,11 @@
                 line-height: 80px;
                 font-size: 2.8rem;
             }
-            
-            .whatsapp-float {
-                bottom: 15px;
-                right: 15px;
-                width: 50px;
-                height: 50px;
-                font-size: 1.7rem;
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
             }
+            
         }
 
         /* Back to top button */
@@ -883,7 +1037,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container nav-container">
-            <div class="logo">RaafiEdits</div>
+            <a href="#profile-section" class="logo">Abdul Raafi</a>
             <div class="nav-links">
                 <a href="#services">Services</a>
                 <a href="#skills">Skills</a>
@@ -896,9 +1050,8 @@
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <div class="profile-section">
+            <div class="profile-section" id="profile-section">
                 <div class="profile-pic">
-                    <!-- Placeholder for profile image -->
                     <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--gradient);border-radius:50%;font-size:70px;font-weight:bold;">
                         <img src="profile.jpg" alt="Profile Picture" style="border-radius:50%;width:100%;height:100%;object-fit:cover;">
                     </div>
@@ -1004,13 +1157,18 @@
         </div>
     </section>
 
-    <!-- Portfolio Section -->
+     <!-- Portfolio Section -->
     <section class="portfolio" id="portfolio">
         <div class="container">
             <h2 class="section-title">Recent Work</h2>
             <div class="portfolio-grid">
                 <div class="portfolio-item">
-                    <div class="portfolio-img" style="background: linear-gradient(45deg, #ff6b6b, #4ecdc4);"></div>
+                    <video class="portfolio-video" poster="" muted loop autoplay>
+                        <source src="raafipromo1.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Social Media Campaign</h3>
                         <p class="portfolio-category">Instagram Reels</p>
@@ -1018,7 +1176,12 @@
                 </div>
                 
                 <div class="portfolio-item">
-                    <div class="portfolio-img" style="background: linear-gradient(45deg, #667eea, #764ba2);"></div>
+                    <video class="portfolio-video" poster="" muted loop autoplay>
+                        <source src="raafipromo2.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Product Launch</h3>
                         <p class="portfolio-category">YouTube Promo</p>
@@ -1026,7 +1189,12 @@
                 </div>
                 
                 <div class="portfolio-item">
-                    <div class="portfolio-img" style="background: linear-gradient(45deg, #11998e, #38ef7d);"></div>
+                    <video class="portfolio-video" poster="" muted loop autoplay>
+                        <source src="raafipromo3.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
                     <div class="portfolio-overlay">
                         <h3 class="portfolio-title">Brand Story</h3>
                         <p class="portfolio-category">Corporate Video</p>
@@ -1036,49 +1204,83 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-    <div class="container">
-        <div class="contact-container">
-            <h2 class="section-title">Ready to Create Something Amazing?</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9;">
-                Transform your vision into reality with professional video editing that delivers results.
-            </p>
-
-            <!--  Start Form -->
-            <form class="contact-form" action="https://formspree.io/f/xovlwyvr" method="POST">
-                <div class="form-group">
-                    <label class="form-label" for="name">Name</label>
-                    <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="message">Project Details</label>
-                    <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Tell me about your project" required></textarea>
-                </div>
-
-                <button type="submit" class="contact-btn">Send Message</button>
-            </form>
-            <!--  End Form -->
-
-            <div class="contact-info">
-                <p><strong>What You Get:</strong></p>
-                <p>Fast Delivery | Top-Notch Quality | Always Zomaxa Style</p>
-                
-                <p style="margin-top: 30px; opacity: 0.8;">
-                    Professional video editing services at affordable rates.<br>
-                    Your content, elevated to the next level.
-                </p>
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <span class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </span>
+            <video controls id="modalVideo">
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-details">
+                <h3 class="video-title" id="modalTitle"></h3>
+                <p class="video-description" id="modalDescription"></p>
             </div>
         </div>
     </div>
-</section>
 
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-container">
+                <h2 class="section-title">Ready to Create Something Amazing?</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9;">
+                    Transform your vision into reality with professional video editing that delivers results.
+                </p>
+
+                <!-- Form Status Messages -->
+                <div id="formStatus" class="form-status"></div>
+
+                <!-- Contact Form -->
+                <form id="contactForm" class="contact-form" action="https://formspree.io/f/xovlwyvr" method="POST">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="message">Project Details</label>
+                        <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Tell me about your project" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="service">Service Interested In</label>
+                        <select id="service" name="service" class="form-input" required>
+                            <option value="">Select a service</option>
+                            <option value="30-Second Sizzler">30-Second Sizzler (₹699)</option>
+                            <option value="1-Minute Visual Blast">1-Minute Visual Blast (₹899)</option>
+                            <option value="3 Custom Videos Package">3 Custom Videos Package (₹1999)</option>
+                            <option value="Custom Project">Custom Project</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="contact-btn">Send Message</button>
+                </form>
+                
+                <!-- Form Loading Overlay -->
+                <div id="formLoading" class="form-loading">
+                    <div class="spinner"></div>
+                </div>
+
+                <div class="contact-info">
+                    <p><strong>What You Get:</strong></p>
+                    <p>Fast Delivery | Top-Notch Quality | Always Zomaxa Style</p>
+                    
+                    <p style="margin-top: 30px; opacity: 0.8;">
+                        Professional video editing services at affordable rates.<br>
+                        Your content, elevated to the next level.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer with Credits -->
     <footer class="footer">
@@ -1089,7 +1291,7 @@
                 <div class="credits">
                     <p><strong>Website Design & Development</strong></p>
                     <p>Designed and developed by Shaarif</p>
-                    <p>For Raafi at <a class="zomaxa-brand"href="https://zomaxa.co" target="_blank">✦Zomaxa.co✦</a></p>
+                    <p>For Raafi at <br><a class="zomaxa-brand" href="https://zomaxa.co" target="_blank">✦Zomaxa.co✦</a></p>
                 </div>
                 
                 <p class="copyright">© 2025 - Turning Visions Into Visual Masterpieces</p>
@@ -1140,23 +1342,67 @@
             });
         });
 
-        // Form submission
-        const contactForm = document.querySelector('.contact-form');
+        // Form submission with Formspree
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+        const formLoading = document.getElementById('formLoading');
         
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Show loading state
+            formLoading.classList.add('active');
             
             // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
+            const service = document.getElementById('service').value;
             
             // Simple validation
-            if (name && email && message) {
-                alert(`Thank you ${name}! Your message has been sent. I'll get back to you soon at ${email}.`);
-                contactForm.reset();
-            } else {
-                alert('Please fill in all fields.');
+            if (!name || !email || !message || !service) {
+                formStatus.textContent = 'Please fill in all required fields.';
+                formStatus.className = 'form-status error';
+                formStatus.style.display = 'block';
+                formLoading.classList.remove('active');
+                return;
+            }
+            
+            try {
+                // Create form data
+                const formData = new FormData(contactForm);
+                
+                // Send to Formspree
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    formStatus.innerHTML = `<i class="fas fa-check-circle"></i> Thank you ${name}! Your message has been sent. I'll get back to you soon at ${email}.`;
+                    formStatus.className = 'form-status success';
+                    contactForm.reset();
+                } else {
+                    const data = await response.json();
+                    if (data.errors) {
+                        formStatus.textContent = data.errors.map(error => error.message).join(", ");
+                    } else {
+                        formStatus.textContent = 'Oops! There was a problem submitting your form. Please try again.';
+                    }
+                    formStatus.className = 'form-status error';
+                }
+            } catch (error) {
+                formStatus.textContent = 'Oops! There was a network error. Please try again.';
+                formStatus.className = 'form-status error';
+            } finally {
+                formStatus.style.display = 'block';
+                formLoading.classList.remove('active');
+                
+                // Scroll to status message
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         });
 
@@ -1174,6 +1420,60 @@
                     });
                 }
             });
+        });
+
+        // Portfolio Video Functionality
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const videoModal = document.getElementById('videoModal');
+        const modalVideo = document.getElementById('modalVideo');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const closeModal = document.getElementById('closeModal');
+        
+        // Add click event to portfolio items
+        portfolioItems.forEach(item => {
+            const playBtn = item.querySelector('.video-play-btn');
+            const video = item.querySelector('.portfolio-video');
+            const title = item.querySelector('.portfolio-title').textContent;
+            const category = item.querySelector('.portfolio-category').textContent;
+            
+            playBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Set modal content
+                modalVideo.src = video.querySelector('source').src;
+                modalTitle.textContent = title;
+                modalDescription.textContent = `${category} - Professionally edited by Abdul Raafi`;
+                
+                // Show modal
+                videoModal.classList.add('active');
+                
+                // Play video
+                modalVideo.load();
+                modalVideo.play();
+            });
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            videoModal.classList.remove('active');
+            modalVideo.pause();
+        });
+        
+        // Close modal when clicking outside
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('active');
+                modalVideo.pause();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+                videoModal.classList.remove('active');
+                modalVideo.pause();
+            }
         });
     </script>
 </body>
